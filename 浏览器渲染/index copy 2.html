@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <h1>这是第一段html文字</h1>
+    <h1>这是第二段html文字</h1>
+    <h1>这是第三段html文字</h1>
+  </body>
+  <script>
+    let startOne = Date.now();
+    console.log("-------------------------------------");
+    console.log("DOM渲染完成,但是没有绘制到屏幕上 js执行开始");
+    console.time("one");
+    while (Date.now() - startOne <= 10000) {}
+    console.log("js执行结束,渲染线程继续,屏幕开始变化");
+    console.timeEnd("one");
+  </script>
+</html>

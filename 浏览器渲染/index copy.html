@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>这是第一段html文字</h1>
+    <h1>这是第二段html文字</h1>
+    <h1>这是第三段html文字</h1>
+
+    <script>
+      let startOne = Date.now();
+      console.log("-------------------------------------");
+      console.log("DOM渲染完成,但是没有绘制到屏幕上 js执行开始");
+      console.time("one");
+      while (Date.now() - startOne <= 10000) {}
+      console.log("js执行结束,渲染线程继续,屏幕开始变化");
+      console.timeEnd("one");
+    </script>
+  </body>
+</html>

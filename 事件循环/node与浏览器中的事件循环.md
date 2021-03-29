@@ -87,6 +87,8 @@ node 在执行每个任务又会将其中任务放入对应的队列.
 
 下面是几个示例代码，将分别在 node10 node12 浏览器中执行，加深对上述的理解
 
+-
+
 ```javascript
 setTimeout(() => {
   console.log("timeout");
@@ -96,3 +98,29 @@ setImmediate(() => {
   console.log("immediate");
 });
 ```
+
+![](assets/Lark20210324194407.png)
+
+结果不确定,因为 setTimeout 属于 timerjieduan,setimemediate 属于 check 阶段,但是 settimeout 的事件 0,并不代表会将其立马放入任务队列中,而 setimmediate 是确实立马放入.
+
+这时是检查任务队列会有两种情况.
+
+1. settimeout 没有被放入队列,先去执行优先级较低的 setimediately
+2. settimeout 已经被放入队列,先被执行
+
+```javascript
+const fs = require("fs");
+
+fs.readFile(__filename, () => {
+  setTimeout(() => {
+    console.log("timeout");
+  }, 0);
+  setImmediate(() => {
+    console.log("immediate");
+  });
+});
+```
+
+在这种歌情况下输出是确定的
+![](assets/Lark20210324195156.png)
+因为 fs.read 的回调函数是属于 poll 阶段的宏任务,遇到 timeout 和 immediately 会将其放入相应的任务队列中,在 poll 阶段之后回去检查 check 阶段,本轮事件循环结束,到下一轮才开始 timeout 阶段
