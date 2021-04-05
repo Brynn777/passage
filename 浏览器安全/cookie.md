@@ -11,6 +11,12 @@ network 中找到属于 hm.baidu.com 的 Url 请求
 
 这个脚本的请求如下
 
+能设置 domain 为 hm.baidu.com 的请求 host 一定是 hm.baidu.com 或者其子域名
+
+请求 origin 是www.zhihu.com中携带的cookie要么是第一方cookie,要么是设置了sameSite为none和secure的第三方cookie
+
+![](res/2021-03-30-00-41-50.png)
+
 ![](res/2021-03-29-23-18-14.png)
 
 ![](res/2021-03-29-23-40-19.png)
@@ -48,3 +54,32 @@ cookie 的 domain 和 requestheader 中的 referer 不满足同站,所以被 sam
 设置在 captcha.zhihu.com 这个 domain 下
 ![](res/2021-03-30-00-30-37.png)
 cookie 所在的 domain 和 referer 在同一个 site 下,对于www.zhihu.com为referer发起的请求都是第一方cookie
+
+使用三方 cookie
+![](res/2021-03-30-11-08-30.png)
+作为第一方 cookie 注入的
+![](res/2021-03-30-11-19-09.png)
+![](res/2021-03-30-11-19-33.png)但是并没有发出可以使用的第三方 cookie
+![](res/2021-03-30-11-21-20.png)因为在浏览器的 cookie 默认为 samesitelax 后,scrcipt 标签和 img 的 src,默认不带上 cookie
+
+![](res/2021-03-30-11-27-45.png)关闭三方 cookie
+
+![](res/2021-03-30-11-30-03.png)samesite 为 none 的 cookie 设置不成功 发起请求时也无法带上
+
+知乎的页面有一个 url 是 hm.baidu.com 的请求
+使用 mobheader 测试设置跨站 cookie
+
+1.  Domain=.baidu.com;成功
+    ![](res/2021-03-30-15-29-50.png)
+    ![](res/2021-03-30-15-30-16.png)
+2.  Domain=.zhihu.com;不成功
+    ![](res/2021-03-30-15-31-02.png)
+    ![](res/2021-03-30-15-31-17.png)
+3.  Domain=.taobao.com;不成功
+    ![](res/2021-03-30-15-27-07.png)
+    ![](res/2021-03-30-15-27-43.png)
+
+document.cookie 只能取到同站的&&不是 httpOnly 的 cookie
+所有三方 cookie 强制设为 none
+![](res/2021-03-30-17-49-55.png)
+所有三方 cookie 强制 strict:setting
